@@ -2,6 +2,7 @@
 Service-oriented design and component-oriented design are extremely complementary. The key semantic difference between these two approaches is as follows:
 ■ In a component-oriented approach, the architect focuses on the provider’s view.
 ■ In a service-oriented approach, the architect focuses on the consumer’s view
+
 Typically, in a component-oriented approach, the architect is focused on ensuring that
 the component they provide is packaged in such a way that it makes their life easier.
 You know that when it comes to packaging and deploying Java code, the code will
