@@ -31,3 +31,6 @@ public class A{
 a++操作实际进行了三步：读取（getfield）- 修改（iadd）- 写入（putfield）
 
 竞态条件（Race Condition）：由于不恰当的执行时序而出现不正确的结果
+
+#### 重排序（Reordering）
+可充分利用多核处理器性能；在缺少同步情况下，Java内存模型允许编译器以及CPU对操作顺序进行重排序，并将数值缓存在寄存器中
