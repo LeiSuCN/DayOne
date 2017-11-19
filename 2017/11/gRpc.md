@@ -4,7 +4,7 @@ ManagedChannelBuilder --> ManagedChannelProvider --> ManagedChannel --> ClientCa
 ```
 
 ClientCall为异步调用
-```
+```java
 public abstract class ClientCall<ReqT, RespT> {
     public ClientCall() {
     }
@@ -46,7 +46,7 @@ public abstract class ClientCall<ReqT, RespT> {
 ManagedChannel 的默认实现：io.grpc.internal.ManagedChannelImpl
 
 ManagedChannelImpl 构造函数
-```
+```java
   ManagedChannelImpl(
       AbstractManagedChannelImplBuilder<?> builder,
       ClientTransportFactory clientTransportFactory,
@@ -59,19 +59,48 @@ ManagedChannelImpl 构造函数
     this.nameResolverFactory = builder.getNameResolverFactory();
     this.nameResolverParams = checkNotNull(builder.getNameResolverParams(), "nameResolverParams");
     // target + ResolverFactory + ResolverParams ==> NameResolver
-    this.nameResolver = getNameResolver(target, nameResolverFactory, nameResolverParams); // 获取到DnsNameResolver
-    // BalancerFactory为默认的PickFirstBalancerFactory，在AbstractManagedChannelImplBuilder.DEFAULT_LOAD_BALANCER_FACTORY 定义
+    // 获取到DnsNameResolver
+    this.nameResolver = getNameResolver(target, nameResolverFactory, nameResolverParams); 
+    // BalancerFactory为默认的PickFirstBalancerFactory
+    // 在AbstractManagedChannelImplBuilder.DEFAULT_LOAD_BALANCER_FACTORY 定义
     this.loadBalancerFactory =
         checkNotNull(builder.loadBalancerFactory, "loadBalancerFactory");
-    // GrpcUtil.SHARED_CHANNEL_EXECUTOR：通过Executors.newCachedThreadPool创建池
+    // GrpcUtil.SHARED_CHANNEL_EXECUTOR
+    // SHARED_CHANNEL_EXECUTOR 为 Executors.newCachedThreadPool
     this.executorPool = checkNotNull(builder.executorPool, "executorPool");
+    // GrpcUtil.SHARED_CHANNEL_EXECUTOR
     this.oobExecutorPool = checkNotNull(oobExecutorPool, "oobExecutorPool");
     this.executor = checkNotNull(executorPool.getObject(), "executor");
+    /**
+     * io.grpc.internal.ChannelExecutor
+     * The thread-less Channel Executor used to run the state mutation logic in ManagedChannelImpl, InternalSubchannel and io.grpc.LoadBalancer s.
+     *
+     * <p>Tasks are queued until drain is called.  Tasks are guaranteed     to be run in the same
+     * order as they are submitted.
+     */
+     // executor在reprocess中用来createRealStream
+     // channelExecutor 是否实现了类似nodejs的EventLoop模型？
     this.delayedTransport = new DelayedClientTransport(this.executor, this.channelExecutor);
+
+    /**
+     * io.grpc.internal.DelayedClientTransport
+     * A client transport that queues requests before a real transport is     available. When reprocess is called, this class applies the provided link SubchannelPicker} to pick a
+     * transport for each pending stream.
+     *
+     * <p>This transport owns every stream that it has created until a real     transport has been picked
+     * for that stream, at which point the ownership of the stream is transferred     to the real transport,
+     * thus the delayed transport stops owning the stream.
+     */
     this.delayedTransport.start(delayedTransportListener);
+
+  /**
+    * io.grpc.internal.BackoffPolicy
+    * Determines how long to wait before doing some action (typically a retry, or a reconnect).
+    */  
     this.backoffPolicyProvider = backoffPolicyProvider;
     this.transportFactory =
         new CallCredentialsApplyingTransportFactory(clientTransportFactory, this.executor);
+    // RealChannel 调用transportFactory创建ClientCallImpl
     this.interceptorChannel = ClientInterceptors.intercept(new RealChannel(), interceptors);
     this.stopwatchSupplier = checkNotNull(stopwatchSupplier, "stopwatchSupplier");
     if (builder.idleTimeoutMillis == IDLE_TIMEOUT_MILLIS_DISABLE) {
@@ -94,9 +123,11 @@ ManagedChannelImpl 构造函数
   }
 ```
 
-ManagedChannelImpl 通过 transportProvider 提供ClientTransport（The client-side transport typically encapsulating a single connection to a remote server）；
-transportProvider中通过subchannelPicker获取PickResult --> Subchannel;
-LbHelperImpl中更新subchannelPicker;
+- ManagedChannelImpl 通过 transportProvider 提供ClientTransport（The client-side transport typically encapsulating a single connection to a remote server）；
+- transportProvider中通过subchannelPicker获取PickResult --> Subchannel;
+- LbHelperImpl中更新subchannelPicker;
+- exitIdleMode中启动nameResolver并注册NameResolverListenerImpl的listener
+
  
 在ManagedChannelProvider中通过java.util.ServiceLoader发现具体实现：
 META-INF/services/io.grpc.ManagedChannelProvider 包含具体实现：io.grpc.netty.NettyChannelProvider
