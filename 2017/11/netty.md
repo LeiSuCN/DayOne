@@ -10,3 +10,9 @@
 ### [DirectBuffer的优势](https://www.zhihu.com/question/60892134)
 1. 底层通过write、read、pwrite，pread函数进行系统调用时，需要传入buffer的起始地址和buffer count作为参数。如果使用java heap的话，我们知道jvm中buffer往往以byte[] 的形式存在，这是一个特殊的对象，由于java heap GC的存在，这里对象在堆中的位置往往会发生移动，移动后我们传入系统函数的地址参数就不是真正的buffer地址了，这样的话无论读写都会发生出错。而C Heap仅仅受Full GC的影响，相对来说地址稳定
 2. JVM规范中没有要求Java的byte[]必须是连续的内存空间，它往往受宿主语言的类型约束；而C Heap中我们分配的虚拟地址空间是可以连续的，而上述的系统调用要求我们使用连续的地址空间作为buffer。
+
+
+###
+io.netty.channel.DefaultChannelPipeline
+io.netty.util.concurrent.EventExecutor.DefaultChannelHandlerContext
+形成链的是ChannelHandlerContext而不是ChannelHandler
