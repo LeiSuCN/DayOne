@@ -19,23 +19,8 @@ io.netty.util.concurrent.EventExecutor.DefaultChannelHandlerContext
 
 ###
 
-..............................
-|  ScheduledExecutorService  |
-..............................
-    ^
-    |
-.......................
-| EventExecutorGroup  |
-.......................
-    ^
-    |...........................|   
-....................  ...................
-|  EventLoopGroup  |  |  EventExecutor  |
-....................  ...................
-    ^                           ^
-    |...........................|   
-...............
-|  EventLoop  | 
-...............
+EventLoop --->  EventLoopGroup  ---> EventExecutorGroup  -->  ScheduledExecutorService
+
+                EventExecutor
 
 EventLoop的本质：Executor
