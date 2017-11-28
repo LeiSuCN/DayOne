@@ -16,3 +16,26 @@
 io.netty.channel.DefaultChannelPipeline
 io.netty.util.concurrent.EventExecutor.DefaultChannelHandlerContext
 形成链的是ChannelHandlerContext而不是ChannelHandler
+
+###
+
+------------------------------
+|  ScheduledExecutorService  |
+------------------------------
+    ^
+	|
+-----------------------
+| EventExecutorGroup  |
+-----------------------
+    ^
+	|---------------------------|   
+--------------------  -------------------
+|  EventLoopGroup  |  |  EventExecutor  |
+--------------------  -------------------
+    ^                           ^
+	|---------------------------|   
+--------------- 
+|  EventLoop  | 
+---------------
+
+EventLoop的本质：Executor
