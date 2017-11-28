@@ -24,3 +24,5 @@ EventLoop --->  EventLoopGroup  ---> EventExecutorGroup  -->  ScheduledExecutorS
                 EventExecutor
 
 EventLoop的本质：Executor
+
+核心实现：SingleThreadEventExecutor
