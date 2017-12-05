@@ -26,3 +26,8 @@ EventLoop --->  EventLoopGroup  ---> EventExecutorGroup  -->  ScheduledExecutorS
 EventLoop的本质：Executor
 
 核心实现：SingleThreadEventExecutor
+
+
+### 底层的Socket或ServerSocket的事件如何绑定到EventLoop上的？
+- AddressResolver 地址解析；gRpc中也有类似概念：NameResolver。将schema与uri分离从而可扩展；
+
