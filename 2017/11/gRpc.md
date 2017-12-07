@@ -131,3 +131,58 @@ ManagedChannelImpl 构造函数
  
 在ManagedChannelProvider中通过java.util.ServiceLoader发现具体实现：
 META-INF/services/io.grpc.ManagedChannelProvider 包含具体实现：io.grpc.netty.NettyChannelProvider
+
+
+ClientCall = Channel.newCall(MethodDescriptor<RequestT, ResponseT> methodDescriptor, CallOptions callOptions)
+
+```
+public final class MethodDescriptor<ReqT, RespT> {
+
+  private final MethodType type;
+  private final String fullMethodName;
+  private final Marshaller<ReqT> requestMarshaller;
+  private final Marshaller<RespT> responseMarshaller;
+  private final @Nullable Object schemaDescriptor;
+  private final boolean idempotent;
+  private final boolean safe;
+  
+  ... ...
+ }
+ ```
+ 
+ 
+ ```
+  public interface Marshaller<T> {
+  
+    public InputStream stream(T value);
+
+    public T parse(InputStream stream);
+  }
+  ```
+  
+ ```
+ public final class CallOptions {
+
+  private Deadline deadline;
+ 
+ private Executor executor;
+
+  private String authority;
+
+  private CallCredentials credentials;
+
+  private String compressorName;
+
+  private Object[][] customOptions = new Object[0][2];
+
+  private List<ClientStreamTracer.Factory> streamTracerFactories = Collections.emptyList();
+
+  private boolean waitForReady;
+
+  private Integer maxInboundMessageSize;
+
+  private Integer maxOutboundMessageSize;
+  
+  ...
+}
+ ```
