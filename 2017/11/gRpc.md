@@ -186,3 +186,25 @@ public final class MethodDescriptor<ReqT, RespT> {
   ...
 }
  ```
+
+```
+/**
+ * Transports for a single {@link SocketAddress}.
+ *
+ * <p>This is the next version of {@link TransportSet} in development.
+ */
+@ThreadSafe
+final class InternalSubchannel implements WithLogId {
+  private static final Logger log = Logger.getLogger(InternalSubchannel.class.getName());
+
+  private final LogId logId = LogId.allocate(getClass().getName());
+  private final EquivalentAddressGroup addressGroup;
+  private final String authority;
+  private final String userAgent;
+  private final BackoffPolicy.Provider backoffPolicyProvider;
+  private final Callback callback;
+  private final ClientTransportFactory transportFactory;
+  private final ScheduledExecutorService scheduledExecutor;
+  ...
+ }
+```
