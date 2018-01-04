@@ -208,3 +208,6 @@ final class InternalSubchannel implements WithLogId {
   ...
  }
 ```
+
+ClientTransport封装了底层连接：
+NettyClientTransport
