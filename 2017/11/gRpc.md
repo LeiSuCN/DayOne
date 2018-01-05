@@ -211,3 +211,8 @@ final class InternalSubchannel implements WithLogId {
 
 ClientTransport封装了底层连接：
 NettyClientTransport
+
+
+
+
+NettyClientHandler.createStream -> NettyClientStream.setHttp2Stream(http2Stream) -> AbstractStream2.onStreamAllocated -> AbstractStream2.notifyIfReady -> ClientCallImpl.onReady -> SerializingExecutor.execute -> SerializingExecutor.schedule -> executor.execute
