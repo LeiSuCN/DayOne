@@ -215,4 +215,6 @@ NettyClientTransport
 
 
 
-NettyClientTransport -> handler.startWriteQueue(channel)? -> NettyClientHandler.write -> NettyClientHandler.createStream -> NettyClientStream.setHttp2Stream(http2Stream) -> AbstractStream2.onStreamAllocated -> AbstractStream2.notifyIfReady -> ClientCallImpl.onReady -> SerializingExecutor.execute -> SerializingExecutor.schedule -> executor.execute
+AbstractClientStream2.start -> NettyClientStream.writeHeaders
+
+NettyClientHandler.createStream -> NettyClientStream.setHttp2Stream(http2Stream) -> AbstractStream2.onStreamAllocated -> AbstractStream2.notifyIfReady -> ClientCallImpl.onReady -> SerializingExecutor.execute -> SerializingExecutor.schedule -> executor.execute
