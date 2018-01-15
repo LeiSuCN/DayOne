@@ -8,6 +8,6 @@
 - [doc](https://store.docker.com/images/mysql)
 -  docker run --name pc0-mysql-1 -e MYSQL_ROOT_PASSWORD=123456 -p 13306:3306 -d mysql:5.7
 
-#### https://store.docker.com/images/redis
+#### Redis
 - [doc](https://store.docker.com/images/redis)
 - docker run --name pc0-redis-1 -p 16379:6379 -d redis
