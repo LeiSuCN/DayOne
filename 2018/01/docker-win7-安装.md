@@ -11,3 +11,9 @@
 #### Redis
 - [doc](https://store.docker.com/images/redis)
 - docker run --name pc0-redis-1 -p 16379:6379 -d redis
+
+
+#### elk全套安装
+- [doc](http://elk-docker.readthedocs.io)
+- docker run --name pc0-elk-1 -d -p 15601:5601 -p 19200:9200 -p 19300:9300 -p 15044:5044 -it  sebp/elk
+- 注意登录虚拟机修改：sysctl -w vm.max_map_count=262144
