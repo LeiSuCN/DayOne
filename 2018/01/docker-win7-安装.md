@@ -17,3 +17,19 @@
 - [doc](http://elk-docker.readthedocs.io)
 - docker run --name pc0-elk-1 -d -p 15601:5601 -p 19200:9200 -p 19300:9300 -p 15044:5044 -it  sebp/elk
 - 注意登录虚拟机修改：sysctl -w vm.max_map_count=262144
+
+#### etcd v2
+- [doc](https://coreos.com/etcd/docs/latest/v2/docker_guide.html)
+- 注意 -name 和 initial-cluster 中的节点名称保持一致
+```
+docker run -d -p 14001:4001 -p 12380:2380 -p 12379:2379 \
+ --name pc0-etcd-1 quay.io/coreos/etcd:v2.3.8 \
+ -name etcd1 \
+ -advertise-client-urls http://${HostIP}:2379,http://${HostIP}:4001 \
+ -listen-client-urls http://0.0.0.0:2379,http://0.0.0.0:4001 \
+ -initial-advertise-peer-urls http://${HostIP}:2380 \
+ -listen-peer-urls http://0.0.0.0:2380 \
+ -initial-cluster-token etcd-cluster-1 \
+ -initial-cluster etcd1=http://${HostIP}:2380 \
+ -initial-cluster-state new
+```
