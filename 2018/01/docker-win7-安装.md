@@ -33,3 +33,7 @@ docker run -d -p 14001:4001 -p 12380:2380 -p 12379:2379 \
  -initial-cluster etcd1=http://${HostIP}:2380 \
  -initial-cluster-state new
 ```
+```
+docker run --name pc0-etcd-1 -d -p 12379:2379 quay.io/coreos/etcd:v2.3.8 -lis
+ten-client-urls http://0.0.0.0:2379 -advertise-client-urls http://0.0.0.0:2379
+```
