@@ -1,4 +1,17 @@
 
+gRpc的核心模型，通过核心API：Channel可以准确表达
+```java
+public abstract class Channel {
+  
+  public abstract <RequestT, ResponseT> ClientCall<RequestT, ResponseT> newCall(
+      MethodDescriptor<RequestT, ResponseT> methodDescriptor, CallOptions callOptions);
+
+  public abstract String authority();
+}
+```
+
+
+
 ```
 ManagedChannelBuilder --> ManagedChannelProvider --> ManagedChannel --> ClientCall --> ClientInterceptor
 ```
@@ -218,3 +231,12 @@ NettyClientTransport
 AbstractClientStream2.start -> NettyClientStream.writeHeaders
 
 NettyClientHandler.createStream -> NettyClientStream.setHttp2Stream(http2Stream) -> AbstractStream2.onStreamAllocated -> AbstractStream2.notifyIfReady -> ClientCallImpl.onReady -> SerializingExecutor.execute -> SerializingExecutor.schedule -> executor.execute
+
+
+
+
+- NameResolver通过Listener.onAddresses调用LoadBalancer.handleResolvedAddressGroups
+- LoadBalancer通过Helper.createSubchannel获取Subchannel并封装为SubchannelPicker
+- SubchannelPicker通过Helper.updateBalancingState方法传递，Helper.updateBalancingState中调用DelayedClientTransport.reprocess
+- DelayedClientTransport.reprocess中调用SubchannelPicker.pickSubchannel
+- ManagedChannelImpl中已经实现了Helper(LbHelperImpl), 可操作的只有NameResolverFactory及LoadBalancer.Factory
