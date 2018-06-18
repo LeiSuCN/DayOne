@@ -12,6 +12,12 @@ A:atomic, C:consistent, I:isolated, D:durable
 - 可重复读(Repeatable read)
 - 读已提交(Read committed)
 - 读未提交(Read uncommitted)
+
+### 1.3数据库默认隔离级别
+- mysql：Repeatable read
+- oracle：Read committed
+- sql server：Read committed
+
 ## 2.各组件中的事务管理
 ### 2.1 Spring
 ### 2.2 Mybatis
