@@ -20,6 +20,35 @@ A - atomic, C - consistent, I - isolated, D - durable
 
 ## 2.各组件中的事务管理
 ### 2.1 Spring
+#### 2.1.1 核心接口
+```java
+public interface PlatformTransactionManager {
+
+	TransactionStatus getTransaction(@Nullable TransactionDefinition definition) throws TransactionException;
+
+	void commit(TransactionStatus status) throws TransactionException;
+
+	void rollback(TransactionStatus status) throws TransactionException;
+
+}
+```
+
 ### 2.2 Mybatis
+#### 2.2.1 核心接口
+```java
+public interface Transaction {
+
+  Connection getConnection() throws SQLException;
+
+  void commit() throws SQLException;
+
+  void rollback() throws SQLException;
+
+  void close() throws SQLException;
+
+  Integer getTimeout() throws SQLException;
+  
+}
+```
 
 ## 3.分布式事务
