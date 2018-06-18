@@ -1,6 +1,6 @@
 ## [1.事务的概念](https://en.wikipedia.org/wiki/Database_transaction)
 ### 1.1 ACID
-A:atomic, C:consistent, I:isolated, D:durable
+A - atomic, C - consistent, I - isolated, D - durable
 
 ### [1.2 事务的隔离级别](https://en.wikipedia.org/wiki/Isolation_(database_systems))
 #### 1.2.1 读现象(Read phenomena)
