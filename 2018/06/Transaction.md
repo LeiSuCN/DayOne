@@ -80,6 +80,17 @@ public interface TransactionStatus extends SavepointManager, Flushable {
 
 }
 ```
+```java
+public interface SavepointManager {
+
+	Object createSavepoint() throws TransactionException;
+
+	void rollbackToSavepoint(Object savepoint) throws TransactionException;
+
+	void releaseSavepoint(Object savepoint) throws TransactionException;
+
+}
+```
 
 ### 2.2 Mybatis
 #### 2.2.1 核心接口
